@@ -9,15 +9,14 @@ const server = http.createServer((req, res) => {
 
   console.log("접속한 IP:", ip);
 
-  // // logs 제외하고만 기록
-if (!req.url.startsWith('/logs')) {
+// logs 제외하고만 기록
+if (!req.url.includes('/logs')) {
   const log = `${new Date().toISOString()} - ${ip}\n`;
   fs.appendFileSync('ip-log.txt', log);
 }
-  
 
-  // 🔒 관리자 페이지
-  if (req.url === '/logs?key=1234') {
+// 관리자 페이지
+if (req.url.startsWith('/logs?key=1234')) {
     let data = '';
     try {
       data = fs.readFileSync('ip-log.txt', 'utf-8');
